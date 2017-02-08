@@ -1,0 +1,15 @@
+{
+  "name": "wait-cli",
+  "version": "0.3.0",
+  "main": "index.js",
+  "description": "zero dependency commandline tool to orchestrate execution",
+  "bin": {
+    "wait": "wait.js"
+  },
+  "author": "3axap4eHko <3axap4eHko@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^2.9.0"
+  },
+  "keywords": ["wait", "await", "connection", "tcp", "process", "command", "sleep", "cli", "commandline"]
+}
