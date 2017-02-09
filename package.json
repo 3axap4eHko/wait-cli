@@ -1,15 +1,34 @@
 {
   "name": "wait-cli",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "main": "index.js",
   "description": "zero dependency commandline tool to orchestrate execution",
   "bin": {
-    "wait": "wait.js"
+    "await": "await.js"
   },
   "author": "3axap4eHko <3axap4eHko@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "commander": "^2.9.0"
   },
-  "keywords": ["wait", "await", "connection", "tcp", "process", "command", "sleep", "cli", "commandline"]
+  "keywords": [
+    "wait",
+    "await",
+    "connection",
+    "tcp",
+    "process",
+    "command",
+    "sleep",
+    "cli",
+    "commandline"
+  ],
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/3axap4eHko/wait-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/3axap4eHko/wait-cli/issues"
+  },
+  "homepage": "https://github.com/3axap4eHko/wait-cli#readme"
 }
