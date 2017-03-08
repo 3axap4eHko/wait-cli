@@ -17,6 +17,7 @@ Awaiting tcp connection(s) to specified addresses
 
 Options:
 - `-s, --sequenced` - Next connection waits for complete previous connection
+- `--not` - Condition negation flag
 
 Example: `await tcp google.com:443`
 
@@ -26,6 +27,7 @@ Awaiting finishing command execution
 Options:
 - `-r, --retry` - retry on non zero exit code of command
 - `-s, --sequenced` - next command waits for complete previous command
+- `--not` - Condition negation flag
 
 Example: `await cmd "curl -sL https://my-domain.never/app-setup.sh | bash -" "app run" --retry --sequenced`
 
@@ -35,6 +37,7 @@ Awaiting existing specified path
 Options:
 - `-s, --sequenced` - next existing check waits for complete previous existing check
 - `-m, --mode` - access mode of path r-read, w-write, e-execute
+- `--not` - Condition negation flag
 
 Example: `await exists "/var/database.pid" "/var/application.pid" --sequenced --mode r`
 
@@ -44,6 +47,7 @@ Awaiting for network adapter
 Options:
 - `-m, --mac <mac address mask>` - specify mac address mask
 - `-i, --internal` - network adapter should be internal
+- `--not` - Condition negation flag
 
 Example: `await network vmnet --mac 00:* --internal`
 
@@ -60,6 +64,7 @@ Example: `await time 20`
  - HTTP -  `await tcp localhost`
  - HTTPS -  `await tcp localhost:443`
  - Memcache -  `await tcp localhost:11211`
+ - Stopping MSSQL -  `await tcp --not localhost:1433`
  - Downloading complete (even with errors) - `await cmd "wget https://mydomain.com/superscript.sh"`
  - Downloading complete (retry on fail) - `await cmd "wget https://mydomain.com/superscript.sh" --retry`
  - Script execution complete - `await cmd "sh superscript.sh"`
