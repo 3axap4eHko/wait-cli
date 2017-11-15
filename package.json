@@ -1,6 +1,6 @@
 {
   "name": "wait-cli",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "main": "index.js",
   "description": "zero dependency commandline tool to orchestrate execution",
   "bin": {
