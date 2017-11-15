@@ -9,7 +9,8 @@
   "author": "3axap4eHko <3axap4eHko@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "commander": "^2.9.0"
+    "commander": "^2.9.0",
+    "glob": "^7.1.2"
   },
   "keywords": [
     "wait",

@@ -8,9 +8,9 @@ module.exports = function ({ iface, ifaceExpr, timeout, macMask, macExpr, netMas
     const interfaceName = Object.keys(interfacesData)
       .find(name => {
         return ifaceExpr.test(name) && interfacesData[name].some(({ mac, netmask, internal }) =>
-            macExpr.test(mac) &&
-            netMaskExpr.test(netmask) &&
-            (isInternal === null || !!isInternal === internal)
+          macExpr.test(mac) &&
+          netMaskExpr.test(netmask) &&
+          (isInternal === null || !!isInternal === internal),
         );
       });
     if (interfaceName) {

@@ -1,6 +1,6 @@
 const { createConnection } = require('net');
 
-module.exports = function ({ address = 'localhost'}) {
+module.exports = function ({ address = 'localhost' }) {
   console.log(`Connecting to ${address}...`);
   const [hostname = 'localhost', port = 80] = address.split(':');
 

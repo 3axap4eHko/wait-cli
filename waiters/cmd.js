@@ -1,6 +1,6 @@
-const {exec} = require('child_process');
+const { exec } = require('child_process');
 
-module.exports = function ({command, retry, timeout}) {
+module.exports = async function ({ command, retry, timeout }) {
   console.log(`Waiting for execution '$ ${command}'...`);
   return new Promise((resolve, reject) => {
     exec(command)
