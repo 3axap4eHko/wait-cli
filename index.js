@@ -97,12 +97,16 @@ commander
   });
 
 commander
-  .command('timeout <timeout>')
-  .description('Wait for timeout complete', parseInt, 10)
-  .action((timeout) => {
-    setTimeout(() => {
-      console.log(`Awaiting for ${timeout} seconds completed`)
-    }, timeout);
+  .command('time [seconds]')
+  .description('Wait for timeout complete')
+  .action((timeout = 1) => {
+    const ms = parseFloat(timeout, 10) * 1e3;
+    if (isNaN(ms)) {
+      console.error('Invalid time argument');
+      process.exit(1);
+    }
+    console.log(`Waiting for ${ms === 1e3 ? 'a second' : `${timeout} seconds`}`);
+    setTimeout(() => {}, ms);
   });
 
 
@@ -112,7 +116,7 @@ commander.on('--help', () => {
   console.log('    $ await tcp google.com:443');
   console.log('    $ await cmd wget https://google.com');
   console.log('    $ await exists /var/process.pid');
-  console.log('    $ await timeout 20');
+  console.log('    $ await time 20');
   console.log('');
 });
 
