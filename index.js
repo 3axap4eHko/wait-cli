@@ -1,14 +1,14 @@
-const commander = require('commander');
-const pkg = require('./package.json');
+import { Command } from 'commander';
+import pkg from './package.json' with { type: 'json' };
 
-const tcp = require('./waiters/tcp');
-const cmd = require('./waiters/cmd');
-const exists = require('./waiters/exists');
-const network = require('./waiters/network');
+import { tcp } from './waiters/tcp.js';
+import { cmd } from './waiters/cmd.js';
+import { exists } from './waiters/exists.js';
+import { network } from './waiters/network.js';
 
 function wait(waiter, options) {
   return waiter(options)
-    .catch(() => setTimeout(wait, 1000, waiter, options));
+    .catch(() => new Promise(resolve => setTimeout(resolve, 1000)).then(() => wait(waiter, options)));
 }
 
 function negate(waiter) {
@@ -40,6 +40,8 @@ function maskToRegexp(mask) {
   return mask.replace(/[-[\]{}().,\\^$|#\s]/g, '\\$&').replace(/([*+?])/g,'.$1');
 }
 
+const commander = new Command();
+
 commander
   .version(pkg.version)
   .usage('[options] <command>');
@@ -48,7 +50,7 @@ commander
   .command('tcp <address> [...addresses]')
   .description('Wait for address(es) connection')
   .option('-s, --sequenced', 'Next connection waits for complete previous connection')
-  .option('-t, --timeout', 'connection timeout seconds', parseInt, 60)
+  .option('-t, --timeout <seconds>', 'connection timeout in seconds', 60)
   .option('--not', 'condition negation')
   .action((address, addresses = [], { timeout, sequenced, not }) => {
     const targets = [address].concat(addresses).map(address => ({ address, timeout }));
@@ -60,7 +62,7 @@ commander
   .description('Wait for command(s) complete')
   .option('-r, --retry', 'retry on non zero exit code')
   .option('-s, --sequenced', 'next command waits for complete previous command')
-  .option('-t, --timeout', 'connection timeout seconds', parseInt, 60)
+  .option('-t, --timeout <seconds>', 'connection timeout in seconds', 60)
   .option('--not', 'condition negation')
   .action((command, commands = [], { timeout, retry, sequenced, not }) => {
     const targets = [command].concat(commands).map(command => ({ command, retry, timeout }));
@@ -72,7 +74,7 @@ commander
   .description('Wait for existing path(s)')
   .option('-s, --sequenced', 'next existing check waits for complete previous existing check')
   .option('-m, --mode <mode>', 'check for access mode (rwx)')
-  .option('-t, --timeout', 'connection timeout seconds', parseInt, 60)
+  .option('-t, --timeout <seconds>', 'connection timeout in seconds', 60)
   .option('--not', 'condition negation')
   .action((path, paths = [], { timeout, sequenced, mode = '', not }) => {
     const targets = [path].concat(paths).map(path => ({ path, timeout, mode }));
@@ -86,23 +88,24 @@ commander
   .option('-m, --mac <mac>', 'interface mac address mask')
   .option('-n, --net-mask <net mask>', 'net mask')
   .option('-i, --internal', 'is internal interface')
-  .option('-t, --timeout', 'connection timeout seconds', parseInt, 60)
+  .option('-t, --timeout <seconds>', 'connection timeout in seconds', 60)
   .option('--not', 'condition negation')
-  .action(({ timeout, iface = '*', mac:macMask = '*', netMask = '*', internal:isInternal, not }) => {
+  .action(({ iface = '*', mac = '*', netMask = '*', internal: isInternal, not }) => {
     const ifaceExpr = new RegExp(maskToRegexp(iface));
-    const macExpr = new RegExp(maskToRegexp(macMask));
+    const macExpr = new RegExp(maskToRegexp(mac));
     const netMaskExpr = new RegExp(maskToRegexp(netMask));
-    const waiter  = not ? negate(network) : network;
-    return wait(waiter, { iface, ifaceExpr, timeout, macMask, macExpr, netMask, netMaskExpr, isInternal });
+    const waiter = not ? negate(network) : network;
+    return wait(waiter, { iface, ifaceExpr, macExpr, netMaskExpr, isInternal });
   });
 
 commander
-  .command('timeout <timeout>')
-  .description('Wait for timeout complete', parseInt, 10)
-  .action((timeout) => {
+  .command('timeout <seconds>')
+  .description('Wait for specified seconds')
+  .action((seconds) => {
+    const ms = parseInt(seconds, 10) * 1000;
     setTimeout(() => {
-      console.log(`Awaiting for ${timeout} seconds completed`)
-    }, timeout);
+      console.log(`Awaiting for ${seconds} seconds completed`);
+    }, ms);
   });
 
 

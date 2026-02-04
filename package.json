@@ -2,6 +2,10 @@
   "name": "wait-cli",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=18.20.0"
+  },
   "description": "zero dependency commandline tool to orchestrate execution",
   "bin": {
     "await": "await.js"
@@ -9,8 +13,8 @@
   "author": "3axap4eHko <3axap4eHko@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "commander": "^2.9.0",
-    "glob": "^7.1.2"
+    "commander": "^14.0.3",
+    "glob": "^13.0.1"
   },
   "keywords": [
     "wait",
@@ -23,7 +27,6 @@
     "cli",
     "commandline"
   ],
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/3axap4eHko/wait-cli.git"
@@ -31,5 +34,6 @@
   "bugs": {
     "url": "https://github.com/3axap4eHko/wait-cli/issues"
   },
-  "homepage": "https://github.com/3axap4eHko/wait-cli#readme"
+  "homepage": "https://github.com/3axap4eHko/wait-cli#readme",
+  "packageManager": "pnpm@10.28.2+sha512.41872f037ad22f7348e3b1debbaf7e867cfd448f2726d9cf74c08f19507c31d2c8e7a11525b983febc2df640b5438dee6023ebb1f84ed43cc2d654d2bc326264"
 }

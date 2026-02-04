@@ -1,14 +1,16 @@
-const { createConnection } = require('net');
+import { createConnection } from 'node:net';
 
-module.exports = function ({ address = 'localhost' }) {
-  console.log(`Connecting to ${address}...`);
-  const [hostname = 'localhost', port = 80] = address.split(':');
+export function tcp({ address = 'localhost:80' }) {
+  const [hostname, port = '80'] = address.split(':');
+  console.log(`Connecting to ${hostname}:${port}...`);
 
   return new Promise((resolve, reject) => {
-    createConnection(parseInt(port), hostname, () => setTimeout(resolve, 3000))
-      .on('data', resolve)
-      .on('close', reject)
-      .on('error', reject)
-      .unref();
+    const socket = createConnection(parseInt(port, 10), hostname);
+    socket.once('connect', () => {
+      socket.destroy();
+      resolve();
+    });
+    socket.once('error', reject);
+    socket.unref();
   }).then(() => console.log(`Successfully connected to ${address}`));
-};
+}
